@@ -1859,6 +1859,7 @@ namespace Nop.Web.Areas.Admin.Factories
                     model.ValidationFileAllowedExtensions = productAttributeMapping.ValidationFileAllowedExtensions;
                     model.ValidationFileMaximumSize = productAttributeMapping.ValidationFileMaximumSize;
                     model.DefaultValue = productAttributeMapping.DefaultValue;
+                    model.FormulaKey = productAttributeMapping.FormulaKey;
                 }
 
                 //prepare condition attributes model
@@ -1980,8 +1981,9 @@ namespace Nop.Web.Areas.Admin.Factories
                     DisplayColorSquaresRgb = productAttributeValue
                         .ProductAttributeMapping.AttributeControlType == AttributeControlType.ColorSquares,
                     ImageSquaresPictureId = productAttributeValue.ImageSquaresPictureId,
-                    DisplayImageSquaresPicture = productAttributeValue
-                        .ProductAttributeMapping.AttributeControlType == AttributeControlType.ImageSquares,
+                    DisplayImageSquaresPicture =
+                        productAttributeValue.ProductAttributeMapping.AttributeControlType == AttributeControlType.ImageSquares ||
+                        productAttributeValue.ProductAttributeMapping.AttributeControlType == AttributeControlType.RadioList,
                     PriceAdjustment = productAttributeValue.PriceAdjustment,
                     PriceAdjustmentUsePercentage = productAttributeValue.PriceAdjustmentUsePercentage,
                     WeightAdjustment = productAttributeValue.WeightAdjustment,
@@ -1990,7 +1992,9 @@ namespace Nop.Web.Areas.Admin.Factories
                     Quantity = productAttributeValue.Quantity,
                     IsPreSelected = productAttributeValue.IsPreSelected,
                     DisplayOrder = productAttributeValue.DisplayOrder,
-                    PictureId = productAttributeValue.PictureId
+                    PictureId = productAttributeValue.PictureId,
+                    FormulaKey = productAttributeValue.FormulaKey,
+                    FormulaValue = productAttributeValue.FormulaValue
                 };
 
                 model.AssociatedProductName = _productService.GetProductById(productAttributeValue.AssociatedProductId)?.Name;
@@ -2004,7 +2008,9 @@ namespace Nop.Web.Areas.Admin.Factories
 
             model.ProductAttributeMappingId = productAttributeMapping.Id;
             model.DisplayColorSquaresRgb = productAttributeMapping.AttributeControlType == AttributeControlType.ColorSquares;
-            model.DisplayImageSquaresPicture = productAttributeMapping.AttributeControlType == AttributeControlType.ImageSquares;
+            model.DisplayImageSquaresPicture =
+                productAttributeMapping.AttributeControlType == AttributeControlType.ImageSquares ||
+                productAttributeMapping.AttributeControlType == AttributeControlType.RadioList;
 
             //set default values for the new model
             if (productAttributeValue == null)

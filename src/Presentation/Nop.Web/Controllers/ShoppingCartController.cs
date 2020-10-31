@@ -64,6 +64,7 @@ namespace Nop.Web.Controllers
         private readonly IPriceFormatter _priceFormatter;
         private readonly IProductAttributeParser _productAttributeParser;
         private readonly IProductAttributeService _productAttributeService;
+        private readonly IProductAttributeFormatter _productAttributeFormatter;
         private readonly IProductService _productService;
         private readonly IShoppingCartModelFactory _shoppingCartModelFactory;
         private readonly IShoppingCartService _shoppingCartService;
@@ -100,6 +101,7 @@ namespace Nop.Web.Controllers
             IPictureService pictureService,
             IPriceCalculationService priceCalculationService,
             IPriceFormatter priceFormatter,
+            IProductAttributeFormatter productAttributeFormatter,
             IProductAttributeParser productAttributeParser,
             IProductAttributeService productAttributeService,
             IProductService productService,
@@ -134,6 +136,7 @@ namespace Nop.Web.Controllers
             _pictureService = pictureService;
             _priceCalculationService = priceCalculationService;
             _priceFormatter = priceFormatter;
+            _productAttributeFormatter = productAttributeFormatter;
             _productAttributeParser = productAttributeParser;
             _productAttributeService = productAttributeService;
             _productService = productService;
@@ -898,12 +901,25 @@ namespace Nop.Web.Controllers
 
             //quantity
             var quantity = 1;
-            foreach (var formKey in form.Keys)
-                if (formKey.Equals($"addtocart_{productId}.EnteredQuantity", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    int.TryParse(form[formKey], out quantity);
-                    break;
-                }
+            if(product.IsFlatPackaging)
+            {
+                foreach (var formKey in form.Keys)
+                    if (formKey.Equals($"attributes_{productId}.AddToCart.EnteredQuantity", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        int.TryParse(form[formKey], out quantity);
+                        break;
+                    }
+            }
+            else
+            {
+                foreach (var formKey in form.Keys)
+                    if (formKey.Equals($"addtocart_{productId}.EnteredQuantity", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        int.TryParse(form[formKey], out quantity);
+                        break;
+                    }
+            }
+
 
             var addToCartWarnings = new List<string>();
 
@@ -975,10 +991,20 @@ namespace Nop.Web.Controllers
                 }
             }
 
+            //qty
+            var quantity = 1;
+            foreach (var formKey in form.Keys)
+            if (formKey.Equals($"attributes_{productId}.AddToCart.EnteredQuantity", StringComparison.InvariantCultureIgnoreCase))
+            {
+                int.TryParse(form[formKey], out quantity);
+                break;
+            }
+
             //price
             var price = "";
             //base price
             var basepricepangv = "";
+            var finalPriceWithDiscount = decimal.MaxValue;
             if (_permissionService.Authorize(StandardPermissionProvider.DisplayPrices) && !product.CustomerEntersPrice)
             {
                 //we do not calculate price of "customer enters price" option is enabled
@@ -986,11 +1012,12 @@ namespace Nop.Web.Controllers
                 var finalPrice = _priceCalculationService.GetUnitPrice(product,
                     _workContext.CurrentCustomer,
                     ShoppingCartType.ShoppingCart,
-                    1, attributeXml, 0,
+                    product.IsFlatPackaging ? quantity : 1, 
+                    attributeXml, 0,
                     rentalStartDate, rentalEndDate,
                     true, out decimal _, out scDiscounts);
                 var finalPriceWithDiscountBase = _taxService.GetProductPrice(product, finalPrice, out decimal _);
-                var finalPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithDiscountBase, _workContext.WorkingCurrency);
+                finalPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithDiscountBase, _workContext.WorkingCurrency);
                 price = _priceFormatter.FormatPrice(finalPriceWithDiscount);
                 basepricepangv = _priceFormatter.FormatBasePrice(product, finalPriceWithDiscountBase, totalWeight);
             }
@@ -1004,6 +1031,7 @@ namespace Nop.Web.Controllers
             if (validateAttributeConditions)
             {
                 var attributes = _productAttributeService.GetProductAttributeMappingsByProductId(product.Id);
+
                 foreach (var attribute in attributes)
                 {
                     var conditionMet = _productAttributeParser.IsConditionMet(attribute, attributeXml);
@@ -1060,21 +1088,50 @@ namespace Nop.Web.Controllers
                     .All(associatedProduct => associatedProduct == null || !associatedProduct.IsShipEnabled || associatedProduct.IsFreeShipping);
             }
 
-            return Json(new
+            if (product.IsFlatPackaging)
             {
-                gtin,
-                mpn,
-                sku,
-                price,
-                basepricepangv,
-                stockAvailability,
-                enabledattributemappingids = enabledAttributeMappingIds.ToArray(),
-                disabledattributemappingids = disabledAttributeMappingIds.ToArray(),
-                pictureFullSizeUrl,
-                pictureDefaultSizeUrl,
-                isFreeShipping,
-                message = errors.Any() ? errors.ToArray() : null
-            });
+                var instantQuote = product.InstantQuote;
+                var totalAmount = _priceFormatter.FormatPrice(finalPriceWithDiscount * quantity);
+                var attributeInfo = _productAttributeFormatter.FormatAttributes(product, attributeXml);
+                return Json(new
+                {
+                    gtin,
+                    mpn,
+                    sku,
+                    price,
+                    basepricepangv,
+                    stockAvailability,
+                    enabledattributemappingids = enabledAttributeMappingIds.ToArray(),
+                    disabledattributemappingids = disabledAttributeMappingIds.ToArray(),
+                    pictureFullSizeUrl,
+                    pictureDefaultSizeUrl,
+                    isFreeShipping,
+                    instantQuote,
+                    quantity,
+                    totalAmount,
+                    attributeInfo,
+                    message = errors.Any() ? errors.ToArray() : null
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    gtin,
+                    mpn,
+                    sku,
+                    price,
+                    basepricepangv,
+                    stockAvailability,
+                    enabledattributemappingids = enabledAttributeMappingIds.ToArray(),
+                    disabledattributemappingids = disabledAttributeMappingIds.ToArray(),
+                    pictureFullSizeUrl,
+                    pictureDefaultSizeUrl,
+                    isFreeShipping,
+                    message = errors.Any() ? errors.ToArray() : null
+                });
+            }
+            
         }
 
         [HttpPost]

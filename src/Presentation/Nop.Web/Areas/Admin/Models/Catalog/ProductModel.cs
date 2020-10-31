@@ -381,6 +381,24 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Published")]
         public bool Published { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.UseFormulaPrice")]
+        public bool UseFormulaPrice { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.PriceFormula")]
+        public string PriceFormula { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.InstantQuote")]
+        public bool InstantQuote { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.IsFlatPackaging")]
+        public bool IsFlatPackaging { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.FlatLength")]
+        public string FlatLength { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.Fields.FlatWidth")]
+        public string FlatWidth { get; set; }
+        
         public string PrimaryStoreCurrencyCode { get; set; }
 
         public string BaseDimensionIn { get; set; }

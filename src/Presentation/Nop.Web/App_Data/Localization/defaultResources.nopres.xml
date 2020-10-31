@@ -1845,6 +1845,18 @@
   <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.DisplayOrder.Hint">
     <Value>The display order of the attribute value. 1 represents the first item in attribute value list.</Value>
   </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ImageSquaresPicture">
+    <Value>Square Picture</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ImageSquaresPicture.Hint">
+    <Value>Upload a picture to be used with the image squares attribute control.</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ApplyToRelatedProducts">
+    <Value>Apply Updates To Related Products</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ApplyToRelatedProducts.Hint">
+    <Value>Apply the latest change to the productes which used this product attribute.</Value>
+  </LocaleResource>
   <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.IsPreSelected">
     <Value>Is pre-selected</Value>
   </LocaleResource>
@@ -18086,5 +18098,98 @@
   </LocaleResource>
   <LocaleResource Name="Wishlist.YourWishlistURL">
     <Value>Your wishlist URL for sharing</Value>
+  </LocaleResource>
+  <LocaleResource Name="Quote.Spec">
+    <Value>Your Design</Value>
+  </LocaleResource>
+  <LocaleResource Name="Quote.Quantity">
+    <Value>Quantity</Value>
+  </LocaleResource>
+  <LocaleResource Name="Quote.Price">
+    <Value>Price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Quote.Amount">
+    <Value>Total Amount</Value>
+  </LocaleResource>
+  <LocaleResource Name="Quote.Sheet">
+    <Value>Qutation</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Configuration.Settings.ProductEditor.FormulaPrice">
+    <Value>Formula Price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.FormulaPrice">
+    <Value>Formula Price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.UseFormulaPrice">
+    <Value>Use Formula Price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.UseFormulaPrice.Hint">
+    <Value>Check to use the formula to calculate the price</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.InstantQuote">
+    <Value>Instant Quote</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.InstantQuote.Hint">
+    <Value>Price be calculated in backend</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.IsFlatPackaging">
+    <Value>Is Flat Packaging Product</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.IsFlatPackaging.Hint">
+    <Value>A flat packaging product is product that can be expanded to a flat piece</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.FlatLength">
+    <Value>Flat Length</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.FlatLength.Hint">
+    <Value>Flat Length</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.FlatWidth">
+    <Value>Flat Width</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.FlatWidth.Hint">
+    <Value>Flat Width</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.PriceFormula">
+    <Value>Price Formula</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.Fields.PriceFormula.Hint">
+    <Value>Price formula to calculate the price for custom packaging product</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.FormulaKey">
+    <Value>Formula Key</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Fields.FormulaKey.Hint">
+    <Value>Keyword used in formula</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaKey">
+    <Value>Formula Key</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaKey.Hint">
+    <Value>Keyword used in formula</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaKey">
+    <Value>Formula Key</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaKey.Hint">
+    <Value>Keyword used in formula</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaValue">
+    <Value>Formula Value</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaValue.Hint">
+    <Value>Value used in formual for price calculation</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.AddToCart.InstantQuote">
+    <Value>Instant Quote</Value>
+  </LocaleResource>
+  <LocaleResource Name="ShoppingCart.AddToCart.InstantQuote.Hint">
+    <Value>Click to get instant quote</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaValue">
+    <Value>Formula Value</Value>
+  </LocaleResource>
+  <LocaleResource Name="Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaValue.Hint">
+    <Value>Value used in formual for price calculation</Value>
   </LocaleResource>
 </Language>

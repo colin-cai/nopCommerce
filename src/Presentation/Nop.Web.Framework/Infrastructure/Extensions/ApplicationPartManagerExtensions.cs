@@ -476,7 +476,8 @@ namespace Nop.Web.Framework.Infrastructure.Extensions
                         }
 
                         if (pluginDescriptors.Contains(pluginDescriptor))
-                            throw new Exception($"A plugin with '{pluginDescriptor.SystemName}' system name is already defined");
+                            continue;
+                            //throw new Exception($"A plugin with '{pluginDescriptor.SystemName}' system name is already defined");
 
                         //set 'Installed' property
                         pluginDescriptor.Installed = PluginsInfo.InstalledPluginNames

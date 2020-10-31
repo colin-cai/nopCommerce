@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Domain.Catalog;
@@ -162,7 +162,8 @@ namespace Nop.Services.Catalog
                     ValidationMaxLength = productAttributeMapping.ValidationMaxLength,
                     ValidationFileAllowedExtensions = productAttributeMapping.ValidationFileAllowedExtensions,
                     ValidationFileMaximumSize = productAttributeMapping.ValidationFileMaximumSize,
-                    DefaultValue = productAttributeMapping.DefaultValue
+                    DefaultValue = productAttributeMapping.DefaultValue,
+                    FormulaKey = productAttributeMapping.FormulaKey
                 };
                 _productAttributeService.InsertProductAttributeMapping(productAttributeMappingCopy);
                 //localization
@@ -210,6 +211,9 @@ namespace Nop.Services.Catalog
                         IsPreSelected = productAttributeValue.IsPreSelected,
                         DisplayOrder = productAttributeValue.DisplayOrder,
                         PictureId = attributeValuePictureId,
+                        FormulaKey = productAttributeValue.FormulaKey,
+                        FormulaValue = productAttributeValue.FormulaValue
+
                     };
                     //picture associated to "iamge square" attribute type (if exists)
                     if (productAttributeValue.ImageSquaresPictureId > 0)
@@ -709,6 +713,12 @@ namespace Nop.Services.Catalog
                 DisplayOrder = product.DisplayOrder,
                 Published = isPublished,
                 Deleted = product.Deleted,
+                UseFormulaPrice = product.UseFormulaPrice,
+                InstantQuote = product.InstantQuote,
+                PriceFormula = product.PriceFormula,
+                IsFlatPackaging = product.IsFlatPackaging,
+                FlatLength = product.FlatLength,
+                FlatWidth = product.FlatWidth,
                 CreatedOnUtc = DateTime.UtcNow,
                 UpdatedOnUtc = DateTime.UtcNow
             };

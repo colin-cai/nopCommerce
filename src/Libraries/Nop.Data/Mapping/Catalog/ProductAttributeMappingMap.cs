@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nop.Core.Domain.Catalog;
 
@@ -19,6 +19,7 @@ namespace Nop.Data.Mapping.Catalog
         {
             builder.ToTable(NopMappingDefaults.ProductProductAttributeTable);
             builder.HasKey(productAttributeMapping => productAttributeMapping.Id);
+            builder.Property(productAttributeMapping => productAttributeMapping.FormulaKey);
 
             builder.HasOne(productAttributeMapping => productAttributeMapping.Product)
                 .WithMany(product => product.ProductAttributeMappings)

@@ -429,7 +429,9 @@ namespace Nop.Services.ExportImport
                 new PropertyByName<ExportProductAttribute>("Quantity", p => p.Quantity),
                 new PropertyByName<ExportProductAttribute>("IsPreSelected", p => p.IsPreSelected),
                 new PropertyByName<ExportProductAttribute>("DisplayOrder", p => p.DisplayOrder),
-                new PropertyByName<ExportProductAttribute>("PictureId", p => p.PictureId)
+                new PropertyByName<ExportProductAttribute>("PictureId", p => p.PictureId),
+                new PropertyByName<ExportProductAttribute>("FormulaKey", p => p.FormulaKey),
+                new PropertyByName<ExportProductAttribute>("FormulaValue", p => p.FormulaValue)
             };
 
             return new PropertyManager<ExportProductAttribute>(attributeProperties, _catalogSettings);
@@ -532,7 +534,9 @@ namespace Nop.Services.ExportImport
                     Quantity = pav.Quantity,
                     IsPreSelected = pav.IsPreSelected,
                     DisplayOrder = pav.DisplayOrder,
-                    PictureId = pav.PictureId
+                    PictureId = pav.PictureId,
+                    FormulaKey = pav.FormulaKey,
+                    FormulaValue = pav.FormulaValue
                 })).ToList();
 
             attributes.AddRange(item.ProductAttributeMappings.Where(pam => !pam.ProductAttributeValues.Any()).Select(
@@ -930,6 +934,12 @@ namespace Nop.Services.ExportImport
                 xmlWriter.WriteString("AvailableForPreOrder", product.AvailableForPreOrder, IgnoreExportPoductProperty(p => p.AvailableForPreOrder));
                 xmlWriter.WriteString("PreOrderAvailabilityStartDateTimeUtc", product.PreOrderAvailabilityStartDateTimeUtc, IgnoreExportPoductProperty(p => p.AvailableForPreOrder));
                 xmlWriter.WriteString("CallForPrice", product.CallForPrice, IgnoreExportPoductProperty(p => p.CallForPrice));
+                xmlWriter.WriteString("UseFormulaPrice", product.UseFormulaPrice, IgnoreExportPoductProperty(p => p.FormulaPrice));
+                xmlWriter.WriteString("InstantQuote", product.InstantQuote, IgnoreExportPoductProperty(p => p.FormulaPrice));
+                xmlWriter.WriteString("PriceFormula", product.PriceFormula, IgnoreExportPoductProperty(p => p.FormulaPrice));
+                xmlWriter.WriteString("IsFlatPackaging", product.IsFlatPackaging, IgnoreExportPoductProperty(p => p.FormulaPrice));
+                xmlWriter.WriteString("FlatLength", product.FlatLength, IgnoreExportPoductProperty(p => p.FormulaPrice));
+                xmlWriter.WriteString("FlatWidth", product.FlatWidth, IgnoreExportPoductProperty(p => p.FormulaPrice));
                 xmlWriter.WriteString("Price", product.Price);
                 xmlWriter.WriteString("OldPrice", product.OldPrice, IgnoreExportPoductProperty(p => p.OldPrice));
                 xmlWriter.WriteString("ProductCost", product.ProductCost, IgnoreExportPoductProperty(p => p.ProductCost));
@@ -1002,6 +1012,7 @@ namespace Nop.Services.ExportImport
                         xmlWriter.WriteString("IsRequired", productAttributeMapping.IsRequired);
                         xmlWriter.WriteString("AttributeControlTypeId", productAttributeMapping.AttributeControlTypeId);
                         xmlWriter.WriteString("DisplayOrder", productAttributeMapping.DisplayOrder);
+                        xmlWriter.WriteString("FormulaKey", productAttributeMapping.FormulaKey);
                         //validation rules
                         if (productAttributeMapping.ValidationRulesAllowed())
                         {
@@ -1055,6 +1066,8 @@ namespace Nop.Services.ExportImport
                             xmlWriter.WriteString("IsPreSelected", productAttributeValue.IsPreSelected);
                             xmlWriter.WriteString("DisplayOrder", productAttributeValue.DisplayOrder);
                             xmlWriter.WriteString("PictureId", productAttributeValue.PictureId);
+                            xmlWriter.WriteString("FormulaKey", productAttributeValue.FormulaKey);
+                            xmlWriter.WriteString("FormulaValue", productAttributeValue.FormulaValue);
                             xmlWriter.WriteEndElement();
                         }
 
@@ -1284,6 +1297,12 @@ namespace Nop.Services.ExportImport
                 new PropertyByName<Product>("AvailableForPreOrder", p => p.AvailableForPreOrder, IgnoreExportPoductProperty(p => p.AvailableForPreOrder)),
                 new PropertyByName<Product>("PreOrderAvailabilityStartDateTimeUtc", p => p.PreOrderAvailabilityStartDateTimeUtc, IgnoreExportPoductProperty(p => p.AvailableForPreOrder)),
                 new PropertyByName<Product>("CallForPrice", p => p.CallForPrice, IgnoreExportPoductProperty(p => p.CallForPrice)),
+                new PropertyByName<Product>("UseFormulaPrice", p => p.UseFormulaPrice, IgnoreExportPoductProperty(p => p.FormulaPrice)),
+                new PropertyByName<Product>("InstantQuote", p => p.InstantQuote, IgnoreExportPoductProperty(p => p.FormulaPrice)),
+                new PropertyByName<Product>("PriceFormula", p => p.PriceFormula, IgnoreExportPoductProperty(p => p.FormulaPrice)),
+                new PropertyByName<Product>("IsFlatPackaging", p => p.IsFlatPackaging, IgnoreExportPoductProperty(p => p.FormulaPrice)),
+                new PropertyByName<Product>("FlatLength", p => p.FlatLength, IgnoreExportPoductProperty(p => p.FormulaPrice)),
+                new PropertyByName<Product>("FlatWidth", p => p.FlatWidth, IgnoreExportPoductProperty(p => p.FormulaPrice)),
                 new PropertyByName<Product>("Price", p => p.Price),
                 new PropertyByName<Product>("OldPrice", p => p.OldPrice, IgnoreExportPoductProperty(p => p.OldPrice)),
                 new PropertyByName<Product>("ProductCost", p => p.ProductCost, IgnoreExportPoductProperty(p => p.ProductCost)),

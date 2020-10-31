@@ -204,6 +204,9 @@ namespace Nop.Web.Areas.Admin.Models.Settings
         [NopResourceDisplayName("Admin.Configuration.Settings.ProductEditor.StockQuantityHistory")]
         public bool StockQuantityHistory { get; set; }
 
+        [NopResourceDisplayName("Admin.Configuration.Settings.ProductEditor.FormulaPrice")]
+        public bool FormulaPrice { get; set; }
+
         #endregion
     }
 }

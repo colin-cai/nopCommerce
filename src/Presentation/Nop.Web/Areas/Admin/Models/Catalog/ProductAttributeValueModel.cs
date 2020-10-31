@@ -88,6 +88,12 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.Values.Fields.Picture")]
         public string PictureThumbnailUrl { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaKey")]
+        public string FormulaKey { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.Values.FormulaValue")]
+        public decimal FormulaValue { get; set; }
+
         public IList<ProductPictureModel> ProductPictureModels { get; set; }
 
         public IList<ProductAttributeValueLocalizedModel> Locales { get; set; }

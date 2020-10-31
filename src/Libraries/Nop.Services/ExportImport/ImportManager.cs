@@ -616,6 +616,8 @@ namespace Nop.Services.ExportImport
             var textPrompt = productAttributeManager.GetProperty("AttributeTextPrompt").StringValue;
             var isRequired = productAttributeManager.GetProperty("AttributeIsRequired").BooleanValue;
             var attributeDisplayOrder = productAttributeManager.GetProperty("AttributeDisplayOrder").IntValue;
+            var formulaKey = productAttributeManager.GetProperty("FormulaKey").StringValue;
+            var formulaValue = productAttributeManager.GetProperty("FormulaValue").DecimalValue;
 
             var productAttributeMapping =
                 lastLoadedProduct.ProductAttributeMappings.FirstOrDefault(
@@ -675,7 +677,9 @@ namespace Nop.Services.ExportImport
                     ImageSquaresPictureId = imageSquaresPictureId,
                     CustomerEntersQty = customerEntersQty,
                     Quantity = quantity,
-                    PictureId = pictureId
+                    PictureId = pictureId,
+                    FormulaKey = formulaKey,
+                    FormulaValue = formulaValue
                 };
 
                 _productAttributeService.InsertProductAttributeValue(pav);
@@ -696,6 +700,8 @@ namespace Nop.Services.ExportImport
                 pav.IsPreSelected = isPreSelected;
                 pav.DisplayOrder = displayOrder;
                 pav.PictureId = pictureId;
+                pav.FormulaKey = formulaKey;
+                pav.FormulaValue = formulaValue;
 
                 _productAttributeService.UpdateProductAttributeValue(pav);
             }
@@ -1555,6 +1561,25 @@ namespace Nop.Services.ExportImport
                             case "IsLimitedToStores":
                                 product.LimitedToStores = property.BooleanValue;
                                 break;
+                            case "UseFormulaPrice":
+                                product.UseFormulaPrice = property.BooleanValue;
+                                break;
+                            case "InstantQuote":
+                                product.InstantQuote = property.BooleanValue;
+                                break;
+                            case "PriceFormula":
+                                product.PriceFormula = property.StringValue;
+                                break;
+                            case "IsFlatPackaging":
+                                product.IsFlatPackaging = property.BooleanValue;
+                                break;
+                            case "FlatLength":
+                                product.FlatLength = property.StringValue;
+                                break;
+                            case "FlatWidth":
+                                product.FlatWidth = property.StringValue;
+                                break;
+
                         }
                     }
 

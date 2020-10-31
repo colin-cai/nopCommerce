@@ -50,6 +50,9 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.Fields.DisplayOrder")]
         public int DisplayOrder { get; set; }
 
+        [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.Fields.FormulaKey")]
+        public string FormulaKey { get; set; }
+
         //validation fields
         [NopResourceDisplayName("Admin.Catalog.Products.ProductAttributes.Attributes.ValidationRules.MinLength")]
         [UIHint("Int32Nullable")]

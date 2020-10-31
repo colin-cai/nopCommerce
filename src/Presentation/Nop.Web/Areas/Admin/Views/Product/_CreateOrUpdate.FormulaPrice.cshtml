@@ -1,0 +1,91 @@
+﻿@model ProductModel
+@using Nop.Core.Domain.Catalog;
+@using Nop.Services
+<script>
+    $(document).ready(function () {
+        $("#@Html.IdFor(model => model.UseFormulaPrice)").click(toggleFormulaPrice);
+        toggleFormulaPrice();
+        $("#@Html.IdFor(model => model.IsFlatPackaging)").click(toggleCustomPackaging);
+        toggleCustomPackaging();
+    });
+
+    function toggleFormulaPrice() {
+        if ($('#@Html.IdFor(model => model.UseFormulaPrice)').is(':checked')) {
+            $('#pnlInstantQuote').show();
+            $('#pnlPriceFormula').show();
+        } else {
+            $('#pnlInstantQuote').hide();
+            $('#pnlPriceFormula').hide();
+        }
+    }
+
+    function toggleCustomPackaging() {
+        if ($('#@Html.IdFor(model => model.IsFlatPackaging)').is(':checked')) {
+            $('#pnlFlatLength').show();
+            $('#pnlFlatWidth').show();
+        } else {
+            $('#pnlFlatLength').hide();
+            $('#pnlFlatWidth').hide();
+        }
+    }
+</script>
+<div class="panel-body">
+    <div class="form-group">
+        <div class="col-md-3">
+            <nop-label asp-for="UseFormulaPrice" />
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="UseFormulaPrice" />
+            <span asp-validation-for="UseFormulaPrice"></span>
+        </div>
+    </div>
+    <nop-nested-setting asp-for="UseFormulaPrice">
+        <div class="form-group" id="pnlInstantQuote">
+            <div class="col-md-3">
+                <nop-label asp-for="InstantQuote" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="InstantQuote" />
+                <span asp-validation-for="InstantQuote"></span>
+            </div>
+        </div>
+        <div class="form-group" id="pnlPriceFormula">
+            <div class="col-md-3">
+                <nop-label asp-for="PriceFormula" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="PriceFormula" />
+                <span asp-validation-for="PriceFormula"></span>
+            </div>
+        </div>
+    </nop-nested-setting>
+    <div class="form-group">
+        <div class="col-md-3">
+            <nop-label asp-for="IsFlatPackaging" />
+        </div>
+        <div class="col-md-9">
+            <nop-editor asp-for="IsFlatPackaging" />
+            <span asp-validation-for="IsFlatPackaging"></span>
+        </div>
+    </div>
+    <nop-nested-setting asp-for="IsFlatPackaging">
+        <div class="form-group" id="pnlFlatLength">
+            <div class="col-md-3">
+                <nop-label asp-for="FlatLength" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="FlatLength" />
+                <span asp-validation-for="FlatLength"></span>
+            </div>
+        </div>
+        <div class="form-group" id="pnlFlatWidth">
+            <div class="col-md-3">
+                <nop-label asp-for="FlatWidth" />
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="FlatWidth" />
+                <span asp-validation-for="FlatWidth"></span>
+            </div>
+        </div>
+    </nop-nested-setting>
+</div>

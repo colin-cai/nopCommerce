@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Nop.Core.Domain.Localization;
 
 namespace Nop.Core.Domain.Catalog
@@ -74,6 +74,11 @@ namespace Nop.Core.Domain.Catalog
         /// for personalizing clothing with a name and only providing the text input box if the "Personalize" radio button is checked.
         /// </summary>
         public string ConditionAttributeXml { get; set; }
+
+        /// <summary>
+        /// Gets or sets key used in formula calculation
+        /// </summary>
+        public string FormulaKey { get; set; }
 
         /// <summary>
         /// Gets the attribute control type

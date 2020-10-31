@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Xml;
 using Nop.Core;
 using Nop.Core.Caching;
 using Nop.Core.Domain.Catalog;
@@ -11,6 +13,7 @@ using Nop.Core.Domain.Discounts;
 using Nop.Core.Domain.Orders;
 using Nop.Services.Directory;
 using Nop.Services.Discounts;
+using org.mariuszgromada.math.mxparser;
 
 namespace Nop.Services.Catalog
 {
@@ -550,6 +553,19 @@ namespace Nop.Services.Catalog
                         product.IsRental ? rentalEndDate : null,
                         out discountAmount, out appliedDiscounts);
             }
+            else if (product.UseFormulaPrice)
+            {
+                var formulaPrice = RunFormula(product, customer, attributesXml, quantity);
+                finalPrice = GetFinalPrice(product,
+                        customer,
+                        formulaPrice,
+                        decimal.Zero,
+                        includeDiscounts,
+                        quantity,
+                        null,
+                        null,
+                        out discountAmount, out appliedDiscounts);
+            }
             else
             {
                 //summarize price of all attributes
@@ -845,6 +861,114 @@ namespace Nop.Services.Catalog
             }
 
             return rez;
+        }
+
+        /// <summary>
+        /// calculate the price for custom packaging products
+        /// </summary>
+        /// <param name="product">product</param>
+        /// <param name="customer">custom</param>
+        /// <param name="customer">attributesXml</param>
+        /// <param name="quantity">quantity</param>
+        /// <returns></returns>
+        public virtual decimal RunFormula(Product product,
+            Customer customer,
+            string attributesXml,
+            int quantity)
+        {
+            if (!product.UseFormulaPrice)
+                throw new NopException("formula price is not enabled");
+
+            if (string.IsNullOrWhiteSpace(product.PriceFormula))
+                throw new NopException("formula is not defined!");
+
+            var formulaValues = new List<Tuple<string, decimal>>();
+
+            var attributeMaps = _productAttributeParser.ParseProductAttributeMappings(attributesXml);
+            var attributeValues = _productAttributeParser.ParseProductAttributeValues(attributesXml);
+
+            // parse formula values from attributes and attribute values
+            foreach (var attributeMap in attributeMaps)
+            {
+                if (string.IsNullOrWhiteSpace(attributeMap.FormulaKey))
+                    continue;
+
+                // value from input
+                if (!attributeMap.ShouldHaveValues())
+                {
+                    var xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml(attributesXml);
+
+                    foreach (XmlNode attributeNode in xmlDoc.SelectNodes(@"//Attributes/ProductAttribute"))
+                    {
+                        if (attributeNode.Attributes?["ID"] == null)
+                            continue;
+
+                        if (!int.TryParse(attributeNode.Attributes["ID"].InnerText.Trim(), out var attributeId) ||
+                            attributeId != attributeMap.Id)
+                            continue;
+
+                        foreach (XmlNode attributeValue in attributeNode.SelectNodes("ProductAttributeValue"))
+                        {
+                            var value = attributeValue.SelectSingleNode("Value").InnerText.Trim();
+                            decimal decimalVlaue;
+                            if (decimal.TryParse(value, out decimalVlaue))
+                                formulaValues.Add(new Tuple<string, decimal>(attributeMap.FormulaKey.Trim(), decimalVlaue));
+                        }
+                    }
+                }
+                else
+                {
+                    // value from attribute value
+                    formulaValues.AddRange(attributeValues.Where(o => o.ProductAttributeMappingId == attributeMap.Id && string.IsNullOrWhiteSpace(o.FormulaKey))
+                        .Select(o => new Tuple<string, decimal>(attributeMap.FormulaKey.Trim(), o.FormulaValue)));
+
+                    // use the formula key defined in attribute value to override the formula key defined in attribute
+                    formulaValues.AddRange(attributeValues.Where(o => o.ProductAttributeMappingId == attributeMap.Id && !string.IsNullOrWhiteSpace(o.FormulaKey))
+                        .Select(o => new Tuple<string, decimal>(o.FormulaKey.Trim(), o.FormulaValue)));
+                }
+            }
+
+            // replace the formula keys in formula with formula values
+            var formula = product.PriceFormula;
+            Regex regex = new Regex(@"has\(\w+\)");
+            var matches = regex.Matches(formula);
+            foreach (Match match in matches)
+            {
+                var key = match.Value.Substring(4, match.Value.Length - 5);
+                if (formulaValues.Any(o => o.Item1 == key))
+                    formula = formula.Replace(match.Value, "1");
+                else
+                    formula = formula.Replace(match.Value, "0");
+            }
+
+            // replace QTY with real quantities
+            formula = Regex.Replace(formula, @"\b" + "QTY" + @"\b", quantity.ToString());
+
+            if (product.IsFlatPackaging)
+            {
+                // replace FL with flat length
+                formula = Regex.Replace(formula, @"\b" + "FL" + @"\b", "(" + product.FlatLength + ")");
+                // replace FW with flat width
+                formula = Regex.Replace(formula, @"\b" + "FW" + @"\b", "(" + product.FlatWidth + ")");
+            }
+
+            foreach (var formulaValue in formulaValues)
+            {
+                // add formula values as arguments for each formula key used in formula
+                var keyPattern = @"\b" + formulaValue.Item1 + @"\b";
+                formula = Regex.Replace(formula, keyPattern, formulaValue.Item2.ToString());
+            }
+
+            var price = new decimal(999999);
+            try
+            {
+                var expression = new Expression(formula);
+                price = new decimal(expression.calculate());
+            }
+            catch { }
+
+            return price;
         }
 
         #endregion

@@ -326,5 +326,10 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets a value indicating whether 'Stock quantity history' tab is shown
         /// </summary>
         public bool StockQuantityHistory { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether 'Use Formula Price' panel is shown
+        /// </summary>
+        public bool FormulaPrice { get; set; }
     }
 }

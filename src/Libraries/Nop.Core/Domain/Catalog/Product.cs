@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Nop.Core.Domain.Discounts;
@@ -408,6 +408,36 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets a value indicating whether to show "Call for Pricing" or "Call for quote" instead of price
         /// </summary>
         public bool CallForPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether it is a flat packaging product
+        /// </summary>
+        public bool IsFlatPackaging { get; set; }
+
+        /// <summary>
+        /// Flat length of custom packaging product
+        /// </summary>
+        public string FlatLength { get; set; }
+
+        /// <summary>
+        /// Flat width of custom packaging product
+        /// </summary>
+        public string FlatWidth { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this product has a formular configed to calculate a price
+        /// </summary>
+        public bool UseFormulaPrice { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to enable "instant quote'
+        /// </summary>
+        public bool InstantQuote { get; set; }
+
+        /// <summary>
+        /// Define a formular to calcualte the product price which is used for custom packaging product so far.
+        /// </summary>
+        public string PriceFormula { get; set; }
 
         /// <summary>
         /// Gets or sets the price

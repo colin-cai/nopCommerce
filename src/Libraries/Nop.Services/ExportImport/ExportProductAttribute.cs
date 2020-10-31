@@ -1,4 +1,4 @@
-namespace Nop.Services.ExportImport
+﻿namespace Nop.Services.ExportImport
 {
     public partial class ExportProductAttribute
     {
@@ -23,6 +23,8 @@ namespace Nop.Services.ExportImport
         public decimal Cost { get; set; }
         public int DisplayOrder { get; set; }
         public bool PriceAdjustmentUsePercentage { get; set; }
+        public string FormulaKey { get; set; }
+        public decimal FormulaValue { get; set; }
         public static int ProducAttributeCellOffset = 2;
     }
 }

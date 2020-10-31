@@ -2556,7 +2556,10 @@ namespace Nop.Web.Areas.Admin.Controllers
                     WeightAdjustment = predefinedValue.WeightAdjustment,
                     Cost = predefinedValue.Cost,
                     IsPreSelected = predefinedValue.IsPreSelected,
-                    DisplayOrder = predefinedValue.DisplayOrder
+                    DisplayOrder = predefinedValue.DisplayOrder,
+                    ImageSquaresPictureId = predefinedValue.ImageSquaresPictureId,
+                    FormulaKey = predefinedValue.FormulaKey,
+                    FormulaValue = predefinedValue.FormulaValue
                 };
                 _productAttributeService.InsertProductAttributeValue(pav);
 

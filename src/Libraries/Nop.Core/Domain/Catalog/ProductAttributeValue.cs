@@ -1,4 +1,4 @@
-using Nop.Core.Domain.Localization;
+﻿using Nop.Core.Domain.Localization;
 
 namespace Nop.Core.Domain.Catalog
 {
@@ -81,6 +81,16 @@ namespace Nop.Core.Domain.Catalog
         /// Gets or sets the picture (identifier) associated with this value. This picture should replace a product main picture once clicked (selected).
         /// </summary>
         public int PictureId { get; set; }
+
+        /// <summary>
+        /// Gets or sets key used in formula calculation
+        /// </summary>
+        public string FormulaKey { get; set; }
+
+        /// <summary>
+        /// Gets or sets value used in formula calculation
+        /// </summary>
+        public decimal FormulaValue { get; set; }
 
         /// <summary>
         /// Gets the product attribute mapping

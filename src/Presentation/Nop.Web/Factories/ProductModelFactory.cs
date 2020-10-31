@@ -573,6 +573,9 @@ namespace Nop.Web.Factories
                 if (product.CustomerEntersPrice)
                 {
                     model.CustomerEntersPrice = true;
+                } else if (product.IsFlatPackaging)
+                {
+                    model.IsFlatPackaging = true;
                 }
                 else
                 {
@@ -698,6 +701,9 @@ namespace Nop.Web.Factories
             }
             //rental
             model.IsRental = product.IsRental;
+
+            //custom packaging
+            model.IsFlatPackaging = product.IsFlatPackaging;
 
             //customer entered price
             model.CustomerEntersPrice = product.CustomerEntersPrice;
@@ -1179,7 +1185,9 @@ namespace Nop.Web.Factories
                 ManageInventoryMethod = product.ManageInventoryMethod,
                 StockAvailability = _productService.FormatStockMessage(product, ""),
                 HasSampleDownload = product.IsDownload && product.HasSampleDownload,
-                DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts
+                DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts,
+                IsFlatPackaging = product.IsFlatPackaging,
+                InstantQuote = product.InstantQuote
             };
 
             //automatically generate product description?

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nop.Core.Domain.Catalog;
 
@@ -41,6 +41,9 @@ namespace Nop.Data.Mapping.Catalog
             builder.Property(product => product.BasepriceAmount).HasColumnType("decimal(18, 4)");
             builder.Property(product => product.BasepriceBaseAmount).HasColumnType("decimal(18, 4)");
             builder.Property(product => product.OverriddenGiftCardAmount).HasColumnType("decimal(18, 4)");
+            builder.Property(product => product.PriceFormula).HasMaxLength(2000);
+            builder.Property(product => product.FlatLength).HasMaxLength(400);
+            builder.Property(product => product.FlatWidth).HasMaxLength(400);
 
             builder.Ignore(product => product.ProductType);
             builder.Ignore(product => product.BackorderMode);

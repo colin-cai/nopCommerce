@@ -2,7 +2,7 @@
 @using Nop.Core.Domain.Orders
 @if (Model.UpdatedShoppingCartItemId > 0)
 {
-    <input asp-for="UpdatedShoppingCartItemId" type="hidden"/>
+    <input asp-for="UpdatedShoppingCartItemId" type="hidden" />
 }
 @if (!Model.DisableBuyButton || Model.CustomerEntersPrice)
 {
@@ -27,25 +27,28 @@
         @if (!Model.DisableBuyButton)
         {
             <div class="add-to-cart-panel">
-                <label asp-for="EnteredQuantity" asp-postfix=":" class="qty-label"></label>
-                @if (Model.AllowedQuantities.Count > 0)
+                @if (!Model.IsFlatPackaging)
                 {
-                    <select asp-for="EnteredQuantity" asp-items="Model.AllowedQuantities" class="qty-dropdown"></select>
-                }
-                else
-                {
-                    <input asp-for="EnteredQuantity" class="qty-input" type="text"/>
-                    <script asp-location="Footer">
-                        //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
-                        $(document).ready(function() {
-                            $("#@Html.IdFor(model => model.EnteredQuantity)").on("keydown", function(event) {
-                                if (event.keyCode == 13) {
-                                    $("#add-to-cart-button-@Model.ProductId").trigger("click");
-                                    return false;
-                                }
-                            });
-                        });
-                    </script>
+                    <label asp-for="EnteredQuantity" asp-postfix=":" class="qty-label"></label>
+                    @if (Model.AllowedQuantities.Count > 0)
+                    {
+                        <select asp-for="EnteredQuantity" asp-items="Model.AllowedQuantities" class="qty-dropdown"></select>
+                    }
+                    else
+                    {
+                        <input asp-for="EnteredQuantity" class="qty-input" type="text"/>
+                        <script asp-location="Footer">
+                                //when a customer clicks 'Enter' button we submit the "add to cart" button (if visible)
+                                $(document).ready(function() {
+                                    $("#@Html.IdFor(model => model.EnteredQuantity)").on("keydown", function(event) {
+                                        if (event.keyCode == 13) {
+                                            $("#add-to-cart-button-@Model.ProductId").trigger("click");
+                                            return false;
+                                        }
+                                    });
+                                });
+                        </script>
+                    }
                 }
                 @{
                     var addToCartText = "";
@@ -65,7 +68,7 @@
                             addToCartText = T("ShoppingCart.PreOrder").Text;
                         }
                     }
-                    <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button" value="@addToCartText" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new {productId = Model.ProductId, shoppingCartTypeId = (int) ShoppingCartType.ShoppingCart})', '#product-details-form');return false;"/>
+                    <input type="button" id="add-to-cart-button-@Model.ProductId" class="button-1 add-to-cart-button @if (Model.IsFlatPackaging){<text>invisible</text>}" value="@addToCartText" data-productid="@Model.ProductId" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddProductToCart-Details", new {productId = Model.ProductId, shoppingCartTypeId = (int) ShoppingCartType.ShoppingCart})', '#product-details-form');return false;" />
                 }
             </div>
             if (!string.IsNullOrEmpty(Model.PreOrderAvailabilityStartDateTimeUserTime))

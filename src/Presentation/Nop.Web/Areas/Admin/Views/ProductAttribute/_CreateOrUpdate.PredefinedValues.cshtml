@@ -45,6 +45,16 @@
                 },
                 new ColumnProperty(nameof(PredefinedProductAttributeValueModel.Id))
                 {
+                    Title = T("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ApplyToRelatedProducts").Text,
+                    Width = "200",
+                    ClassName =  NopColumnClassDefaults.CenterAll,
+                    Render = new RenderButtonCustom(NopButtonClassDefaults.Success, T("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ApplyToRelatedProducts").Text)
+                    {
+                        Url = Url.Content("~/Admin/ProductAttribute/ApplyToRelatedProducts/")
+                    }
+                },
+                new ColumnProperty(nameof(PredefinedProductAttributeValueModel.Id))
+                {
                     Title = T("Admin.Common.Edit").Text,
                     Width = "100",
                     ClassName =  NopColumnClassDefaults.Button,

@@ -88,7 +88,7 @@
                         @{
                             var dataDictAttributes = new ViewDataDictionary(ViewData);
                             dataDictAttributes.TemplateInfo.HtmlFieldPrefix = $"attributes_{Model.Id}";
-                            @await Html.PartialAsync("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+                            @await Html.PartialAsync("_ProductAttributes", Model, dataDictAttributes)
                         }
                         <!--gift card-->
                         @{
@@ -127,6 +127,7 @@
                             @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsInsideOverviewButtonsAfter, additionalData = Model })
                         </div>
                         @await Html.PartialAsync("_ShareButton", Model)
+                        @*@await Html.PartialAsync("_InstantQuote", Model)*@
                         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewBottom, additionalData = Model })
                     </div>
                     @if (!string.IsNullOrEmpty(Model.FullDescription))

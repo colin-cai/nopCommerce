@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core.Domain.Catalog;
 using Nop.Services.Catalog;
@@ -25,6 +26,8 @@ namespace Nop.Web.Areas.Admin.Controllers
         private readonly IPermissionService _permissionService;
         private readonly IProductAttributeModelFactory _productAttributeModelFactory;
         private readonly IProductAttributeService _productAttributeService;
+        private readonly IProductService _productService;
+        private readonly ILanguageService _languageService;
 
         #endregion Fields
 
@@ -36,7 +39,9 @@ namespace Nop.Web.Areas.Admin.Controllers
             INotificationService notificationService,
             IPermissionService permissionService,
             IProductAttributeModelFactory productAttributeModelFactory,
-            IProductAttributeService productAttributeService)
+            IProductAttributeService productAttributeService,
+            IProductService productService,
+            ILanguageService languageService)
         {
             _customerActivityService = customerActivityService;
             _localizationService = localizationService;
@@ -45,6 +50,8 @@ namespace Nop.Web.Areas.Admin.Controllers
             _permissionService = permissionService;
             _productAttributeModelFactory = productAttributeModelFactory;
             _productAttributeService = productAttributeService;
+            _productService = productService;
+            _languageService = languageService;
         }
 
         #endregion
@@ -380,6 +387,75 @@ namespace Nop.Web.Areas.Admin.Controllers
             _productAttributeService.DeletePredefinedProductAttributeValue(productAttributeValue);
 
             return new NullJsonResult();
+        }
+
+        public virtual IActionResult ApplyToRelatedProducts(int id)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageAttributes))
+                return AccessDeniedView();
+
+            //try to get a predefined product attribute value with the specified id
+            var preProductAttributeValue = _productAttributeService.GetPredefinedProductAttributeValueById(id)
+                ?? throw new ArgumentException("No predefined product attribute value found with the specified id");
+
+            //try to get all products which use current product attribute
+            var products = _productService.GetProductsByProductAtributeId(preProductAttributeValue.ProductAttributeId);
+
+            foreach(var product in products)
+            {
+                var productAttributeMapping = product.ProductAttributeMappings.FirstOrDefault(o => o.ProductAttributeId == preProductAttributeValue.ProductAttributeId);
+                if (productAttributeMapping == null)
+                    continue;
+
+                var attributeValue = productAttributeMapping.ProductAttributeValues.FirstOrDefault(o => o.Name == preProductAttributeValue.Name);
+                if (attributeValue != null)
+                {
+                    attributeValue.AttributeValueType = AttributeValueType.Simple;
+                    attributeValue.PriceAdjustment = preProductAttributeValue.PriceAdjustment;
+                    attributeValue.PriceAdjustmentUsePercentage = preProductAttributeValue.PriceAdjustmentUsePercentage;
+                    attributeValue.WeightAdjustment = preProductAttributeValue.WeightAdjustment;
+                    attributeValue.Cost = preProductAttributeValue.Cost;
+                    attributeValue.IsPreSelected = preProductAttributeValue.IsPreSelected;
+                    attributeValue.DisplayOrder = preProductAttributeValue.DisplayOrder;
+                    attributeValue.ImageSquaresPictureId = preProductAttributeValue.ImageSquaresPictureId;
+                    attributeValue.FormulaKey = preProductAttributeValue.FormulaKey;
+                    attributeValue.FormulaValue = preProductAttributeValue.FormulaValue;
+
+                    //attributeValue.
+
+                    _productAttributeService.UpdateProductAttributeValue(attributeValue);
+                }
+                else
+                {
+                    attributeValue = new ProductAttributeValue
+                    {
+                        ProductAttributeMappingId = productAttributeMapping.Id,
+                        AttributeValueType = AttributeValueType.Simple,
+                        Name = preProductAttributeValue.Name,
+                        PriceAdjustment = preProductAttributeValue.PriceAdjustment,
+                        PriceAdjustmentUsePercentage = preProductAttributeValue.PriceAdjustmentUsePercentage,
+                        WeightAdjustment = preProductAttributeValue.WeightAdjustment,
+                        Cost = preProductAttributeValue.Cost,
+                        IsPreSelected = preProductAttributeValue.IsPreSelected,
+                        DisplayOrder = preProductAttributeValue.DisplayOrder,
+                        ImageSquaresPictureId = preProductAttributeValue.ImageSquaresPictureId,
+                        FormulaKey = preProductAttributeValue.FormulaKey,
+                        FormulaValue = preProductAttributeValue.FormulaValue
+                    };
+                    _productAttributeService.InsertProductAttributeValue(attributeValue);
+                }
+
+                //localization
+                var languages = _languageService.GetAllLanguages(true);
+                foreach (var lang in languages)
+                {
+                    var name = _localizationService.GetLocalized(preProductAttributeValue, x => x.Name, lang.Id, false, false);
+                    if (!string.IsNullOrEmpty(name))
+                        _localizedEntityService.SaveLocalizedValue(attributeValue, x => x.Name, name, lang.Id);
+                }
+            }
+
+            return RedirectToAction("Edit", new { id = preProductAttributeValue.ProductAttributeId });
         }
 
         #endregion

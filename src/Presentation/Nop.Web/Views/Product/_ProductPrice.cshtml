@@ -2,7 +2,7 @@
 @using Nop.Core
 @using Nop.Core.Domain.Tax
 @inject IWorkContext workContext
-@if (!Model.CustomerEntersPrice)
+@if (!Model.CustomerEntersPrice && !Model.IsFlatPackaging)
 {
     <div class="prices" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
         @if (Model.CallForPrice)

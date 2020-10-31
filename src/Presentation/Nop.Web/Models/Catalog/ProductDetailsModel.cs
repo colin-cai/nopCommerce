@@ -81,6 +81,10 @@ namespace Nop.Web.Models.Catalog
 
         public string PageShareCode { get; set; }
 
+        public bool IsFlatPackaging { get; set; }
+
+        public bool InstantQuote { get; set; }
+
         public ProductPriceModel ProductPrice { get; set; }
 
         public AddToCartModel AddToCart { get; set; }
@@ -143,6 +147,8 @@ namespace Nop.Web.Models.Catalog
             public decimal CustomerEnteredPrice { get; set; }
             public string CustomerEnteredPriceRange { get; set; }
 
+            public bool IsFlatPackaging { get; set; }
+
             public bool DisableBuyButton { get; set; }
             public bool DisableWishlistButton { get; set; }
 
@@ -175,6 +181,8 @@ namespace Nop.Web.Models.Catalog
             public bool CustomerEntersPrice { get; set; }
 
             public bool CallForPrice { get; set; }
+
+            public bool IsFlatPackaging { get; set; }
 
             public int ProductId { get; set; }
 

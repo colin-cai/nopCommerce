@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Nop.Web.Framework.Models;
 using Nop.Web.Framework.Mvc.ModelBinding;
 
@@ -50,6 +51,16 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
 
         [NopResourceDisplayName("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.DisplayOrder")]
         public int DisplayOrder { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.ImageSquaresPicture")]
+        [UIHint("Picture")]
+        public int ImageSquaresPictureId { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaKey")]
+        public string FormulaKey { get; set; }
+
+        [NopResourceDisplayName("Admin.Catalog.Attributes.ProductAttributes.PredefinedValues.Fields.FormulaValue")]
+        public decimal FormulaValue { get; set; }
 
         public IList<PredefinedProductAttributeValueLocalizedModel> Locales { get; set; }
 
