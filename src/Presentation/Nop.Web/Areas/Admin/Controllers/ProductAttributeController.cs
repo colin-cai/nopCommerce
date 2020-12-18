@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Nop.Core.Domain.Catalog;
@@ -236,6 +237,27 @@ namespace Nop.Web.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
+        [HttpPost]
+        public virtual IActionResult DeleteSelected(ICollection<int> selectedIds)
+        {
+            if (!_permissionService.Authorize(StandardPermissionProvider.ManageAttributes))
+                return AccessDeniedView();
+
+            if (selectedIds != null)
+            {
+                var productAttributes = _productAttributeService.GetProductAttributeByIds(selectedIds.ToArray());
+                _productAttributeService.DeleteProductAttributes(productAttributes);
+
+                foreach (var productAttribute in productAttributes)
+                {
+                    _customerActivityService.InsertActivity("DeleteProductAttribute",
+                        string.Format(_localizationService.GetResource("ActivityLog.DeleteProductAttribute"), productAttribute.Name), productAttribute);
+                }
+            }
+
+            return Json(new { Result = true });
+        }
+
         #endregion
 
         #region Used by products
@@ -403,11 +425,19 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             foreach(var product in products)
             {
-                var productAttributeMapping = product.ProductAttributeMappings.FirstOrDefault(o => o.ProductAttributeId == preProductAttributeValue.ProductAttributeId);
+                var productAttributeMappings = _productAttributeService.GetProductAttributeMappingsByProductId(product.Id);
+                if (productAttributeMappings == null)
+                    continue;
+
+                var productAttributeMapping = productAttributeMappings.FirstOrDefault(o => o.ProductAttributeId == preProductAttributeValue.ProductAttributeId);
                 if (productAttributeMapping == null)
                     continue;
 
-                var attributeValue = productAttributeMapping.ProductAttributeValues.FirstOrDefault(o => o.Name == preProductAttributeValue.Name);
+                var attributeValues = _productAttributeService.GetProductAttributeValues(productAttributeMapping.Id);
+                if (attributeValues == null)
+                    continue;
+
+                var attributeValue = attributeValues.FirstOrDefault(o => o.Name == preProductAttributeValue.Name);
                 if (attributeValue != null)
                 {
                     attributeValue.AttributeValueType = AttributeValueType.Simple;

@@ -19,24 +19,38 @@
             $('#pnlValidationFileMaximumSize').hide();
             $('#pnlValidationFileAllowedExtensions').hide();
             $('#pnlDefaultValueLocalized').show();
+            $('#pnlDefaultValue').show();
         } else if (selectedAttributeControlTypeId == @(((int) AttributeControlType.MultilineTextbox).ToString())) {
             $('#pnlValidationMinLength').show();
             $('#pnlValidationMaxLength').show();
             $('#pnlValidationFileMaximumSize').hide();
             $('#pnlValidationFileAllowedExtensions').hide();
             $('#pnlDefaultValueLocalized').show();
+            $('#pnlDefaultValue').show();
         } else if (selectedAttributeControlTypeId == @(((int) AttributeControlType.FileUpload).ToString())) {
             $('#pnlValidationMinLength').hide();
             $('#pnlValidationMaxLength').hide();
             $('#pnlValidationFileMaximumSize').show();
             $('#pnlValidationFileAllowedExtensions').show();
             $('#pnlDefaultValueLocalized').hide();
+            $('#pnlDefaultValue').hide();
+            $("#@Html.IdFor(model => model.DefaultValue)").val('');
+            @for (var item = 0; item < Model.Locales.Count; item++)
+            {
+                <text>$("#@Html.IdFor(model => model.Locales[item].DefaultValue)").val('');</text>
+            }
         } else {
             $('#pnlValidationMinLength').hide();
             $('#pnlValidationMaxLength').hide();
             $('#pnlValidationFileMaximumSize').hide();
             $('#pnlValidationFileAllowedExtensions').hide();
             $('#pnlDefaultValueLocalized').hide();
+            $('#pnlDefaultValue').hide();
+            $("#@Html.IdFor(model => model.DefaultValue)").val('');
+            @for (var item = 0; item < Model.Locales.Count; item++)
+            {
+                <text>$("#@Html.IdFor(model => model.Locales[item].DefaultValue)").val('');</text>
+            }
         }
 
         //values
@@ -46,9 +60,9 @@
             selectedAttributeControlTypeId == @(((int) AttributeControlType.ColorSquares).ToString()) ||
             selectedAttributeControlTypeId == @(((int) AttributeControlType.ImageSquares).ToString()) ||
             selectedAttributeControlTypeId == @(((int) AttributeControlType.ReadonlyCheckboxes).ToString())) {
-            $('[data-tab-name=tab-values]').show();
+            $('[data-panel-name=product-attribute-mapping-values]').show();
         } else {
-            $('[data-tab-name=tab-values]').hide();
+            $('[data-panel-name=product-attribute-mapping-values]').hide();
         }
     }
 </script>
@@ -118,31 +132,31 @@
         </div>
     </div>
     @(Html.LocalizedEditor<ProductAttributeMappingModel, ProductAttributeMappingLocalizedModel>("pnlDefaultValueLocalized",
-            @<div>
-                <div class="form-group advanced-setting">
-                    <div class="col-md-3">
-                        <nop-label asp-for="@Model.Locales[item].DefaultValue" />
-                    </div>
-                    <div class="col-md-9">
-                        <nop-editor asp-for="@Model.Locales[item].DefaultValue" />
-                        <span asp-validation-for="@Model.Locales[item].DefaultValue"></span>
-                    </div>
-                </div>
-                <input type="hidden" asp-for="@Model.Locales[item].LanguageId" />
+    @<div>
+        <div class="form-group advanced-setting">
+            <div class="col-md-3">
+                <nop-label asp-for="@Model.Locales[item].DefaultValue"/>
             </div>
-  ,
-                @<div>
-                    <div class="form-group advanced-setting">
-                        <div class="col-md-3">
-                            <nop-label asp-for="DefaultValue" />
-                        </div>
-                        <div class="col-md-9">
-                            <nop-editor asp-for="DefaultValue" />
-                            <span asp-validation-for="DefaultValue"></span>
-                        </div>
-                    </div>
-                </div>
-     ))
+            <div class="col-md-9">
+                <nop-editor asp-for="@Model.Locales[item].DefaultValue"/>
+                <span asp-validation-for="@Model.Locales[item].DefaultValue"></span>
+            </div>
+        </div>
+        <input type="hidden" asp-for="@Model.Locales[item].LanguageId" /> 
+    </div>
+,
+    @<div>
+        <div class="form-group advanced-setting" id="pnlDefaultValue">
+            <div class="col-md-3">
+                <nop-label asp-for="DefaultValue"/>
+            </div>
+            <div class="col-md-9">
+                <nop-editor asp-for="DefaultValue"/>
+                <span asp-validation-for="DefaultValue"></span>
+            </div>
+        </div>
+     </div>
+))
     <div class="form-group">
         <div class="col-md-3">
             <nop-label asp-for="DisplayOrder" />

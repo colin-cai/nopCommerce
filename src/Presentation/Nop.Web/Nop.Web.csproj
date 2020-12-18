@@ -1,19 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Copyright>Copyright © Nop Solutions, Ltd</Copyright>
     <Company>Nop Solutions, Ltd</Company>
     <Authors>Nop Solutions, Ltd</Authors>
-    <Version>4.2.0.0</Version>
+    <Version>4.3.0.0</Version>
     <Description>Nop.Web is also an MVC web application project, a presentation layer for public store and admin area.</Description>
-    <PackageLicenseUrl>http://www.nopcommerce.com/licensev3.aspx</PackageLicenseUrl>
-    <PackageProjectUrl>http://www.nopcommerce.com/</PackageProjectUrl>
+    <PackageLicenseUrl>https://www.nopcommerce.com/license</PackageLicenseUrl>
+    <PackageProjectUrl>https://www.nopcommerce.com/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/nopSolutions/nopCommerce</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <!--Set this parameter to true to get the dlls copied from the NuGet cache to the output of your project-->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-    <Platforms>AnyCPU;x64</Platforms>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <!--When true, compiles and emits the Razor assembly as part of publishing the project-->
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,127 +28,22 @@
   <ItemGroup>
     <!-- We copy the entire \App_Data directory. But we ignore JSON files and data protection keys  -->
     <Content Include="App_Data\**" CopyToPublishDirectory="PreserveNewest" Exclude="App_Data\*.json" />
-    <Content Update="App_Data\*.json" CopyToPublishDirectory="Never" />
+    <Content Remove="App_Data\*.json" />
     <Content Update="App_Data\DataProtectionKeys\*.xml" CopyToPublishDirectory="Never" />
 
-    <Compile Remove="Plugins\**" />
-    <EmbeddedResource Remove="Plugins\**" />
-    <None Remove="Plugins\**" />
+    <Compile Remove="Plugins\**;Themes\**" />
+    <Content Remove="Plugins\**;Themes\**" />
+    <EmbeddedResource Remove="Plugins\**;Themes\**" />
+    <None Remove="Plugins\**;Themes\**" />
 
-    <!-- We copy the entire \Plugins and \Themes directories.
-	    But we ignore cshtml and JSON files to avoid "Duplicate 'Content' items were included" error during publishing.
-	    We also can use "CheckForDuplicateItemsContinueOnError" as per https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/build/Microsoft.NET.Sdk.DefaultItems.targets -->
-    <Content Include="Plugins\**" CopyToPublishDirectory="PreserveNewest" Exclude="Plugins\**\*.config;Plugins\**\*.cshtml;Plugins\**\*.json" />
+    <Content Include="Plugins\bin\placeholder.txt" CopyToPublishDirectory="PreserveNewest"/>
+    <None Include="Plugins\**"  CopyToPublishDirectory="PreserveNewest" />
+
     <Content Include="Themes\**" CopyToPublishDirectory="PreserveNewest" Exclude="Themes\**\*.config;Themes\**\*.cshtml;Themes\**\*.json" />
+    <None Include="Themes\**"  CopyToPublishDirectory="PreserveNewest" />
 
     <!-- We copy the \Logs directory -->
     <Content Include="Logs\**" CopyToPublishDirectory="PreserveNewest" />
-    <None Remove="Themes\WinInPak3\Content\css\print.css" />
-    <None Remove="Themes\WinInPak3\Content\css\styles.css" />
-    <None Remove="Themes\WinInPak3\Content\css\styles.rtl.css" />
-    <None Remove="Themes\WinInPak3\Content\images\ajax-loader-small.gif" />
-    <None Remove="Themes\WinInPak3\Content\images\back-button.png" />
-    <None Remove="Themes\WinInPak3\Content\images\calendar-next.png" />
-    <None Remove="Themes\WinInPak3\Content\images\calendar-prev.png" />
-    <None Remove="Themes\WinInPak3\Content\images\close.png" />
-    <None Remove="Themes\WinInPak3\Content\images\compare-button.png" />
-    <None Remove="Themes\WinInPak3\Content\images\details.png" />
-    <None Remove="Themes\WinInPak3\Content\images\discontinued-product-icon.png" />
-    <None Remove="Themes\WinInPak3\Content\images\download-button.png" />
-    <None Remove="Themes\WinInPak3\Content\images\edit.png" />
-    <None Remove="Themes\WinInPak3\Content\images\edit_.png" />
-    <None Remove="Themes\WinInPak3\Content\images\email-button.png" />
-    <None Remove="Themes\WinInPak3\Content\images\first.png" />
-    <None Remove="Themes\WinInPak3\Content\images\ie_warning.jpg" />
-    <None Remove="Themes\WinInPak3\Content\images\last.png" />
-    <None Remove="Themes\WinInPak3\Content\images\loading.gif" />
-    <None Remove="Themes\WinInPak3\Content\images\logo.png" />
-    <None Remove="Themes\WinInPak3\Content\images\menu-icon.png" />
-    <None Remove="Themes\WinInPak3\Content\images\move.png" />
-    <None Remove="Themes\WinInPak3\Content\images\new.png" />
-    <None Remove="Themes\WinInPak3\Content\images\next.png" />
-    <None Remove="Themes\WinInPak3\Content\images\pointer.png" />
-    <None Remove="Themes\WinInPak3\Content\images\prev.png" />
-    <None Remove="Themes\WinInPak3\Content\images\rating1.png" />
-    <None Remove="Themes\WinInPak3\Content\images\rating2.png" />
-    <None Remove="Themes\WinInPak3\Content\images\remove.png" />
-    <None Remove="Themes\WinInPak3\Content\images\remove_.png" />
-    <None Remove="Themes\WinInPak3\Content\images\reply.png" />
-    <None Remove="Themes\WinInPak3\Content\images\retry.png" />
-    <None Remove="Themes\WinInPak3\Content\images\return.png" />
-    <None Remove="Themes\WinInPak3\Content\images\rss.png" />
-    <None Remove="Themes\WinInPak3\Content\images\shipping.png" />
-    <None Remove="Themes\WinInPak3\Content\images\shopping-bag.png" />
-    <None Remove="Themes\WinInPak3\Content\images\social-sprite.png" />
-    <None Remove="Themes\WinInPak3\Content\images\subscribe-button.png" />
-    <None Remove="Themes\WinInPak3\Content\images\toggle-black.png" />
-    <None Remove="Themes\WinInPak3\Content\images\toggle-gray.png" />
-    <None Remove="Themes\WinInPak3\Content\images\toggle-white.png" />
-    <None Remove="Themes\WinInPak3\Content\images\topic-type1.png" />
-    <None Remove="Themes\WinInPak3\Content\images\topic-type2.png" />
-    <None Remove="Themes\WinInPak3\Content\images\topic-type3.png" />
-    <None Remove="Themes\WinInPak3\Content\images\view-grid.png" />
-    <None Remove="Themes\WinInPak3\Content\images\view-list.png" />
-    <None Remove="Themes\WinInPak3\Content\images\vote-down-selected.png" />
-    <None Remove="Themes\WinInPak3\Content\images\vote-down.png" />
-    <None Remove="Themes\WinInPak3\Content\images\vote-up-selected.png" />
-    <None Remove="Themes\WinInPak3\Content\images\vote-up.png" />
-    <None Remove="Themes\WinInPak3\Content\images\watch.png" />
-    <None Remove="Themes\WinInPak3\Content\images\wishlist-button.png" />
-    <None Remove="Themes\WinInPak3\preview.jpg" />
-    <None Remove="Themes\WinInPak\Content\css\print.css" />
-    <None Remove="Themes\WinInPak\Content\css\styles.css" />
-    <None Remove="Themes\WinInPak\Content\css\styles.rtl.css" />
-    <None Remove="Themes\WinInPak\Content\images\ajax-loader-small.gif" />
-    <None Remove="Themes\WinInPak\Content\images\back-button.png" />
-    <None Remove="Themes\WinInPak\Content\images\calendar-next.png" />
-    <None Remove="Themes\WinInPak\Content\images\calendar-prev.png" />
-    <None Remove="Themes\WinInPak\Content\images\close.png" />
-    <None Remove="Themes\WinInPak\Content\images\compare-button.png" />
-    <None Remove="Themes\WinInPak\Content\images\details.png" />
-    <None Remove="Themes\WinInPak\Content\images\discontinued-product-icon.png" />
-    <None Remove="Themes\WinInPak\Content\images\download-button.png" />
-    <None Remove="Themes\WinInPak\Content\images\edit.png" />
-    <None Remove="Themes\WinInPak\Content\images\edit_.png" />
-    <None Remove="Themes\WinInPak\Content\images\email-button.png" />
-    <None Remove="Themes\WinInPak\Content\images\first.png" />
-    <None Remove="Themes\WinInPak\Content\images\ie_warning.jpg" />
-    <None Remove="Themes\WinInPak\Content\images\last.png" />
-    <None Remove="Themes\WinInPak\Content\images\loading.gif" />
-    <None Remove="Themes\WinInPak\Content\images\logo.png" />
-    <None Remove="Themes\WinInPak\Content\images\menu-icon.png" />
-    <None Remove="Themes\WinInPak\Content\images\move.png" />
-    <None Remove="Themes\WinInPak\Content\images\new.png" />
-    <None Remove="Themes\WinInPak\Content\images\next.png" />
-    <None Remove="Themes\WinInPak\Content\images\pointer.png" />
-    <None Remove="Themes\WinInPak\Content\images\prev.png" />
-    <None Remove="Themes\WinInPak\Content\images\rating1.png" />
-    <None Remove="Themes\WinInPak\Content\images\rating2.png" />
-    <None Remove="Themes\WinInPak\Content\images\remove.png" />
-    <None Remove="Themes\WinInPak\Content\images\remove_.png" />
-    <None Remove="Themes\WinInPak\Content\images\reply.png" />
-    <None Remove="Themes\WinInPak\Content\images\retry.png" />
-    <None Remove="Themes\WinInPak\Content\images\return.png" />
-    <None Remove="Themes\WinInPak\Content\images\rss.png" />
-    <None Remove="Themes\WinInPak\Content\images\shipping.png" />
-    <None Remove="Themes\WinInPak\Content\images\shopping-bag.png" />
-    <None Remove="Themes\WinInPak\Content\images\social-sprite.png" />
-    <None Remove="Themes\WinInPak\Content\images\subscribe-button.png" />
-    <None Remove="Themes\WinInPak\Content\images\toggle-black.png" />
-    <None Remove="Themes\WinInPak\Content\images\toggle-gray.png" />
-    <None Remove="Themes\WinInPak\Content\images\toggle-white.png" />
-    <None Remove="Themes\WinInPak\Content\images\topic-type1.png" />
-    <None Remove="Themes\WinInPak\Content\images\topic-type2.png" />
-    <None Remove="Themes\WinInPak\Content\images\topic-type3.png" />
-    <None Remove="Themes\WinInPak\Content\images\view-grid.png" />
-    <None Remove="Themes\WinInPak\Content\images\view-list.png" />
-    <None Remove="Themes\WinInPak\Content\images\vote-down-selected.png" />
-    <None Remove="Themes\WinInPak\Content\images\vote-down.png" />
-    <None Remove="Themes\WinInPak\Content\images\vote-up-selected.png" />
-    <None Remove="Themes\WinInPak\Content\images\vote-up.png" />
-    <None Remove="Themes\WinInPak\Content\images\watch.png" />
-    <None Remove="Themes\WinInPak\Content\images\wishlist-button.png" />
-    <None Remove="Themes\WinInPak\preview.jpg" />
 
     <None Update="Areas\Admin\sitemap.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -154,11 +51,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Plugins\" />
+    <!-- This setting fixes the problem caused by this update in the websdk in vs2019
+    https://github.com/aspnet/websdk/commit/7e6b193ddcf1eec5c0a88a9748c626775555273e#diff-edf5a48ed0d4aa5a4289cb857bf46a04
+    Therefore, we restore the standard configuration behavior (there was no copy to the output directory) 
+    in order to avoid the "Duplicate dll" error during publication. 
+    We can also use “ExcludeConfigFilesFromBuildOutput” according to https://github.com/aspnet/AspNetCore/issues/14017 -->
+    <Content Update="**\*.config;**\*.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <Folder Include="Plugins\" />
   </ItemGroup>
 
   <!-- This target execute after "Build" target.
@@ -187,7 +89,8 @@
     <!-- When .NET Core builds a project, it copies all referenced libraries to the output folder.
       For plugins it creates too many unnecessary files that just take up space.
       At the moment you can't disable this behavior. That's why we have to manually delete all unnecessary libraries from plugin output directories. -->
-    <!--<MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(PluginsFolders)" Targets="NopClear" />-->
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(PluginsFolders)" Targets="NopClear" />
+
   </Target>
 
   <PropertyGroup>

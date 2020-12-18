@@ -127,6 +127,8 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.ProductTags")]
         public string ProductTags { get; set; }
 
+        public string InitialProductTags { get; set; }
+
         [NopResourceDisplayName("Admin.Catalog.Products.Fields.Sku")]
         public string Sku { get; set; }
 
@@ -446,6 +448,7 @@ namespace Nop.Web.Areas.Admin.Models.Catalog
 
         //product attributes
         public bool ProductAttributesExist { get; set; }
+        public bool CanCreateCombinations { get; set; }
 
         //multiple warehouses
         [NopResourceDisplayName("Admin.Catalog.Products.ProductWarehouseInventory")]
